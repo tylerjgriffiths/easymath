@@ -1,0 +1,108 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{easymath}[Simplified live-typing of mathematics]
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+
+%%%%%%%%%%%%%
+%% Symbols %%
+%%%%%%%%%%%%%
+
+%% The differential operator
+\providecommand{\D}{\ensuremath{\mathrm{d}}}
+
+%% Euler's number
+\providecommand{\E}{\ensuremath{\mathrm{e}}}
+
+%% Energy
+\providecommand{\Ey}{\ensuremath{\mathcal{E}}}
+%% Aliases
+\let\egy\Ey
+\let\energy\Ey
+
+%% Hamiltonian operator
+\providecommand{\ham}{\ensuremath{\mathcal{H}}}
+
+%%%%%%%%%%%%%%
+%% Brackets %%
+%%%%%%%%%%%%%%
+
+%% Parentheses
+\providecommand{\br}[1]{\ensuremath{\left( {#1} \right)}}
+%% Angle brackets
+\providecommand{\abr}[1]{\ensuremath{\left< {#1} \right>}}
+%% Curly braces
+\providecommand{\cubr}[1]{\ensuremath{\left\{ {#1} \right\}}}
+%% Square brackets
+\providecommand{\sqbr}[1]{\ensuremath{\left[ {#1} \right]}}
+
+%% Quantum mechanical brakets
+\providecommand{\bra}[1]{\ensuremath{\left< {#1} \right|}}
+\providecommand{\ket}[1]{\ensuremath{\left| {#1} \right>}}
+\providecommand{\braket}[2]{\ensuremath{\left< {#1} \middle| {#2} \right>}}
+\providecommand{\bramket}[3]{\ensuremath{\left< {#1} \middle| {#2} \middle| {#3} \right>}}
+
+
+%%%%%%%%%%%%%%%
+%% Functions %%
+%%%%%%%%%%%%%%%
+
+%% "Of", to provide arguments to functions with proper spacing.
+\providecommand{\of}[1]{\ensuremath{\!\br{#1}}}
+
+%% An "upright" function with argument
+\providecommand{\upf}[2]{\ensuremath{\mathrm}{#1}\of{#1}}
+%% Exponential function
+\providecommand{\ex}[1]{\ensuremath{\E^{\br{#1}}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Differential equation goodies %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% _______________________
+%% Ordiniary differentials
+%% ^^^^^^^^^^^^^^^^^^^^^^^
+
+%% A general, n-th order differential fraction.
+\providecommand{\diffn}[3]{\ensuremath{\frac{\D^{#3} {#1}}{\D {#2}^{#3}}}}
+
+%% A first-order differential fraction.
+\providecommand{\diff}[2]{\ensuremath{\diffn{#1}{#2}{}}}
+
+%% An n-th order differential fraction with respect to time.
+\providecommand{\ddtn}[2]{\ensuremath{\diffn{#1}{t}{#2}}}
+
+%% A first-order differential fraction with respect to time.
+\providecommand{\ddt}[1]{\ensuremath{\ddtn{#1}{}}}
+
+%% _____________________
+%% Partial differentials
+%% ^^^^^^^^^^^^^^^^^^^^^
+
+%% A general, n-th order partial differential fraction.
+\providecommand{\pdiffn}[3]{\ensuremath{\frac{\partial^{#3} {#1}}{\partial {#2}^{#3}}}}
+
+%% A first-order partial differential.
+\providecommand{\pdiff}[2]{\ensuremath{\pdiffn{#1}{#2}{}}}
+
+%% An n-th order partial differential with respect to time.
+\providecommand{\pdtn}[2]{\ensuremath{\pdiffn{#1}{t}{#2}}}
+%% An alias
+\let\pddtn\pdtn
+
+%% A first-order partial differential with respet to time.
+\providecommand{\pdt}[2]{\ensuremath{\pdtn{#1}{}}}
+%% An alias
+\let\pddt\pdt
+
+%%%%%%%%%%%%%%%
+%% Integrals %%
+%%%%%%%%%%%%%%%
+
+%% A general limited integral.
+\providecommand{\lint}[4]{\ensuremath{\int_{#1}^{#2} {#3} \,\D {#4}}}
+
+%% A general unlimited integral.
+\providecommand{\uint}[2]{\ensuremath{\lint{}{}{#1}{#2}}}
+

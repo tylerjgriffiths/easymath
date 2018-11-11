@@ -1,0 +1,136 @@
+\documentclass[11pt]{memoir}
+%Gummi|065|=)
+\title{\Huge \textsc{Easymath}\\ \huge\emph{Slightly faster mathematical typesetting}}
+\author{Tyler Griffiths}
+\date{}
+
+\usepackage{booktabs}
+\def\arraystretch{1.4}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+
+\usepackage[labelfont=bf, margin=2cm]{caption}
+
+\usepackage{easymath}
+
+\nouppercaseheads
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+This {\LaTeX} package provides a number of commands to make it easier to ``live-\TeX'' mathematically-heavy lectures. It generally reflects the sorts of mathematics I've had to type during the course of an undergraduate Chemistry degree, taking additional courses in scientific computing.
+
+Every command is wrapped in \verb=\ensuremath= and so can be used in prose directly, without entering \verb=$math mode$=.
+
+\section{Symbols}
+
+This package defines a few symbols, largely for later internal use.
+
+\begin{table}
+\centering
+\caption{Symbols provided by \textsc{Easymath}.}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Command & Example & Description \\
+\midrule
+\verb=\D= & \D & Differential operator \\
+\verb=\E= & \E & Euler's number \\
+\verb=\Ey=, \verb=\egy=, \verb=\energy= & \Ey & Energy \\
+\verb=\ham= & \ham & Hamiltonian operator \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+\section{Brackets}
+
+Several types of brackets are provided.
+
+\begin{table}
+\centering
+\caption{Brackets provided by \textsc{Easymath}.}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Command & Example & Description \\
+\midrule
+\verb=\br= & \br{abc} & Parentheses\\
+\verb=\abr= & \abr{abc} & Angle brackets \\
+\verb=\cubr= & \cubr{abc} & Curly braces\\
+\verb=\sqbr= & \sqbr{abc} & Square brackets \\
+\verb=\bra= & \bra{\phi} & Dirac ``bra'' \\
+\verb=\ket= & \ket{\psi} & Dirac ``ket'' \\
+\verb=\braket= & \braket{\phi}{\psi} & Dirac ``braket'' \\
+\verb=\bramket= & \bramket{\phi}{A}{\psi} & Dirac ``braket'' (mnemonic: \texttt{m}\emph{iddle})\\
+\bottomrule 
+\end{tabular}
+\end{table}
+
+\section{Functions}
+
+Here are provided some common functions and useful snippets for writing them.
+
+\begin{table}
+\centering
+\caption{Function commands provided by \textsc{Easymath}.}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Command & Example & Description\\
+\midrule
+\verb=\of= & $f\of{x}$ & Correctly-spaced, correctly-sized, function argument. \\
+\verb=\upf= & $\upf{abc}{x}$ & \texttt{Up}right multiletter \texttt{f}unction with argument. \\
+\verb=\ex= & \ex{i\pi} & Exponential function with argument. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Differentials}
+
+Much of this package aims to make typesetting of differential equations faster. Utilities are provided for both partial and ordinary differentials.
+
+\begin{table}
+\centering
+\caption{Differential functions provided by \textsc{Easymath}.}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Command & Example & Description \\
+\midrule
+\verb=\diffn= & \diffn{y}{x}{4} &$n$th order ordinary differential.\\
+\verb=\diff= & \diff{y}{x} & First-order differential.\\
+\verb=\ddtn= & \ddtn{y}{6} & $n$th order ordinary differential with respect to time. \\
+\verb=\ddt= & \ddt{y} & First-order ordinary differential with respect to time. \\
+\verb=\pdiffn= & \pdiffn{y}{x}{2} & $n$th order partial differential.\\
+\verb=\pdiff= & \pdiff{y}{x} & First-order partial differential.\\
+\verb=\pdtn=, \verb=\pddtn= & \pdtn{T}{2} & $n$th order partial differential with respect to time.\\
+\verb=\pdt=, \verb=\pddt= & \pdt{\Gamma} && First-order partial differential with respect to time.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Integrals}
+
+A few commands are provided to make it easier to type integrals.
+
+\begin{table}
+\centering
+\caption{Integral functions provided by \textsc{Easymath}.}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Command& Example& Description\\
+\midrule
+\verb=\lint= & \lint{a}{b}{f\of x}{x} & Limited integral.\\
+\verb=\uint= & \uint{g\of r}{r} & Unlimited integral.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
