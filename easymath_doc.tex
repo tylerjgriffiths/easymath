@@ -1,19 +1,25 @@
 \documentclass[11pt]{memoir}
-%Gummi|065|=)
+
+%% Titling information
 \title{\Huge \textsc{Easymath}\\ \huge\emph{Slightly faster mathematical typesetting}}
 \author{Tyler Griffiths}
 \date{}
 
+%% Packages
 \usepackage{booktabs}
+\usepackage{easymath}
+\usepackage[labelfont=bf, margin=2cm]{caption}
+
+
+
+
+%% Appearance
+\nouppercaseheads
+
+%% Increase spacing in tables
 \def\arraystretch{1.4}
 \renewcommand{\thesection}{\arabic{section}}
 \renewcommand{\thetable}{\thesection.\arabic{table}}
-
-\usepackage[labelfont=bf, margin=2cm]{caption}
-
-\usepackage{easymath}
-
-\nouppercaseheads
 
 \begin{document}
 
@@ -22,7 +28,8 @@
 \tableofcontents
 
 \section{Introduction}
-This {\LaTeX} package provides a number of commands to make it easier to ``live-\TeX'' mathematically-heavy lectures. It generally reflects the sorts of mathematics I've had to type during the course of an undergraduate Chemistry degree, taking additional courses in scientific computing.
+
+This {\LaTeX} package provides a number of commands to make it easier to ``live-\TeX'' mathematically-heavy lectures. It generally reflects the sorts of mathematics I've had to type during the course of an undergraduate Chemistry degree, taking an additional module in scientific computing (with a focus on partial differential equations).
 
 Every command is wrapped in \verb=\ensuremath= and so can be used in prose directly, without entering \verb=$math mode$=.
 
