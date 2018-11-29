@@ -4,6 +4,7 @@
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 \RequirePackage{xparse}
+
 %%%%%%%%%%%%%
 %% Symbols %%
 %%%%%%%%%%%%%
@@ -63,16 +64,70 @@
 
 %% A shorter alias for \text.
 \providecommand{\tx}[1]{\ensuremath{{\text{#1}}}}
-%% "Of", to provide arguments to functions with proper spacing.
-\providecommand{\of}[1]{\ensuremath{\!\br{#1}}}
 
-%% An "upright" function with argument
-\providecommand{\upf}[2]{\ensuremath{\mathrm}{#1}\of{#2}}
+
+\NewDocumentCommand{\of}{sm}
+{
+  \IfBooleanTF{#1}
+  {
+    %% Starred version, intelligently bracket.
+    \ensuremath{\brmaybe*{#1}}
+  }
+  {
+    %% Unstarred version, always bracket.
+    \ensuremath{\br{#1}}
+  }
+}    
+
+%% Function, with maybe-bracketed argument.
+%% Multiple letter function names will be \mathrm.
+
+\ExplSyntaxOn
+\NewDocumentCommand{\f}{smm}
+{
+  \IfBooleanTF{#1}
+  { % starred version, don't bracket the argument unless
+    % length > 1.
+    \int_compare:nTF { \tl_count:n {#2} > 1}
+    {
+      \ensuremath{\mathrm{#2} \of*{#3}}
+    }
+    { % else
+      \ensuremath{{#2} \of*{#3}}
+    }
+  }
+  { % Unstarred version, bracket the argument always.
+ 
+    \int_compare:nTF { \tl_count:n {#2} > 1}
+    {
+      \ensuremath{\mathrm{#2} \,\of {#3}}
+    }
+    { %else
+      \ensuremath{{#2} \,\of{#3}}
+    }
+  }
+}
+\ExplSyntaxOff
+
 %% Exponential function
-\providecommand{\ex}[1]{\ensuremath{\E^{\br{#1}}}}
+%% Starred version never brackets the exponent.
+
+\NewDocumentCommand{\ex}{sm}
+{
+  \IfBooleanTF {#1}
+  {
+    %% Never bracket
+    \ensuremath{\E^{#1}}
+  }
+  {
+    %% Maybe bracket.
+    \ensuremath{\E^{\brmaybe{#1}}}
+  }
+}
+
 %% Inverse function
-\providecommand{\inv}[1]{\ensuremath{\frac{1}{#1}}}
-%% Big-Oh with argument.
+\providecommand{\inv}[1]{\ensuremath{\fr{1}{#1}}}
+%% Big-Oh with argument. Conventionally, this should always be bracketed.
 \providecommand{\Oh}[1]{\ensuremath{\mathcal{O} \of{#1}}}
 
 %% A more intelligent fraction, that uses a slash in textmode.
@@ -80,21 +135,65 @@
 %% \o[ver]frac. We also want to bracket the arguments of the slashed
 %% function, but only when the argument is over one character in
 %% length.
+
 \ExplSyntaxOn
-\NewDocumentCommand{\brmaybe}{m}
+\NewDocumentCommand{\brmaybe}{sm}
 {
-  \int_compare:nTF { \tl_count:n { #1 } > 1 }
+  \IfBooleanTF {#1}
   {
-    \ensuremath{\br{#1}}
+    % Starred version, modify spacing.
+    \int_compare:nTF { \tl_count:n { #2 } > 1 }
+    {
+      \ensuremath{\!\br{#2}}
+    }
+    { % else
+      \ensuremath{\ #2}
+    }
   }
-  { % else
-    \ensuremath{#1}
+  {
+    % Unstarred, don't modify spacing.
+    \int_compare:nTF {\tl_count:n { #2 } > 1}
+    {
+      \ensuremath{\br{#2}}
+    }
+    {
+      \ensuremath{#2}
+    }
   }
 }
 \ExplSyntaxOff
-\providecommand{\sfrac}[2]{\ensuremath{\brmaybe{#1}/\brmaybe{#2}}}
+
+
+
+\NewDocumentCommand{\sfrac}{smm}
+{
+  \IfBooleanTF {#1}
+  {
+    %% Starred version, don't attempt to bracket.
+    \ensuremath{{#2}/{#3}}
+ } 
+  {
+    \ensuremath{\brmaybe{#2}/\brmaybe{#3}}
+  }
+}
+
+
 \providecommand{\ofrac}[2]{\ensuremath{{#1}\over{#2}}}
-\providecommand{\fr}[2]{\ensuremath{\mathchoice{\ofrac{#1}{#2}}{\sfrac{#1}{#2}}{\sfrac{#1}{#2}}{\sfrac{#1}{#2}}}}
+
+
+\NewDocumentCommand{\fr}{smm}
+{
+  \IfBooleanTF {#1}
+  {
+    %% Starred version, don't attempt to bracket in case of sfrac.
+    \ensuremath{\mathchoice{\ofrac{#2}{#3}}{\sfrac*{#2}{#3}}{\sfrac*{#2}{#3}}{\sfrac*{#2}{#3}}}
+  }
+  {
+    %% Regular version, bracket if needed.    
+    \ensuremath{\mathchoice{\ofrac{#2}{#3}}{\sfrac{#2}{#3}}{\sfrac{#2}{#3}}{\sfrac{#2}{#3}}}
+  }
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Differential equation goodies %%
@@ -104,45 +203,80 @@
 %% Ordiniary differentials
 %% ^^^^^^^^^^^^^^^^^^^^^^^
 
-%% A general, n-th order differential fraction.
-\providecommand{\diffn}[3]{\ensuremath{\frac{\D^{#3} {#1}}{\D {#2}^{#3}}}}
 
-%% A first-order differential fraction.
-\providecommand{\diff}[2]{\ensuremath{\diffn{#1}{#2}{}}}
+\NewDocumentCommand{\diff}{omm}
+{
+  \IfNoValueTF {#1}
+  {
+    \ensuremath{\fr*{\D {#2}}{\D {#3}}}
+  }
+  {
+    \ensuremath{\fr*{\D^{#1} {#2}}{\D {#3}^{#1}}}
+  }
+}
 
-%% An n-th order differential fraction with respect to time.
-\providecommand{\ddtn}[2]{\ensuremath{\diffn{#1}{t}{#2}}}
 
-%% A first-order differential fraction with respect to time.
-\providecommand{\ddt}[1]{\ensuremath{\ddtn{#1}{}}}
+
+
+\NewDocumentCommand{\ddt}{om}
+{
+  \IfNoValueTF {#1}
+  {
+    \ensuremath{\diff{#2}{t}}
+  }
+  {
+    \ensuremath{\diff[#1]{#2}{t}}
+  }
+}
+
 
 %% _____________________
 %% Partial differentials
 %% ^^^^^^^^^^^^^^^^^^^^^
 
-%% A general, n-th order partial differential fraction.
-\providecommand{\pdiffn}[3]{\ensuremath{\frac{\partial^{#3} {#1}}{\partial {#2}^{#3}}}}
 
-%% A first-order partial differential.
-\providecommand{\pdiff}[2]{\ensuremath{\pdiffn{#1}{#2}{}}}
+\NewDocumentCommand{\pdiff}{omm}
+{
+  \IfNoValueTF{#1}
+  {
+    \ensuremath{\fr*{\del {#2}}{\del {#3}}}
+  }
+  {
+    \ensuremath{\fr*{\del^{#1} {#2}} {\del {#3}}}
+  }
+}
 
-%% An n-th order partial differential with respect to time.
-\providecommand{\pdtn}[2]{\ensuremath{\pdiffn{#1}{t}{#2}}}
-%% An alias
-\let\pddtn\pdtn
 
-%% A first-order partial differential with respet to time.
-\providecommand{\pdt}[1]{\ensuremath{\pdtn{#1}{}}}
-%% An alias
-\let\pddt\pdt
+
+\NewDocumentCommand{\pdt}{om}
+{
+  \IfNoValueTF {#1}
+  {
+    \ensuremath{\pdiff{#2}{t}}
+  }
+  {
+    \ensuremath{\pdiff[#1]{#2}{t}}
+  }
+}
+
+
 
 %%%%%%%%%%%%%%%
 %% Integrals %%
 %%%%%%%%%%%%%%%
 
-%% A general limited integral.
-\providecommand{\lint}[4]{\ensuremath{\int_{#1}^{#2} {#3} \,\D {#4}}}
 
-%% A general unlimited integral.
-\providecommand{\uint}[2]{\ensuremath{\lint{}{}{#1}{#2}}}
+\NewDocumentCommand{\ig}{O{}O{}mm}
+{
+  \IfNoValueTF {#1}
+  {
+    \IfNoValueTF{#2}
+    {
+      \ensuremath{\int {#3}\,\D{#4}}
+    }
+  }
+  {
+    \ensuremath{\int_{#1}^{#2} {#3} \,\D{#4}}
+  }
+}
 
