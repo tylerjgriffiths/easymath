@@ -1,0 +1,7 @@
+#+TITLE: Easymath
+#+AUTHOR: Tyler Griffiths
+
+A set of macros to make it faster to typeset mathematics,
+for example during lectures.
+
+See =easymath_doc.pdf= for full documentation.
