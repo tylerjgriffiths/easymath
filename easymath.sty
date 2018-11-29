@@ -3,7 +3,7 @@
 
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
-
+\RequirePackage{xparse}
 %%%%%%%%%%%%%
 %% Symbols %%
 %%%%%%%%%%%%%
@@ -74,6 +74,27 @@
 \providecommand{\inv}[1]{\ensuremath{\frac{1}{#1}}}
 %% Big-Oh with argument.
 \providecommand{\Oh}[1]{\ensuremath{\mathcal{O} \of{#1}}}
+
+%% A more intelligent fraction, that uses a slash in textmode.
+%% Define this in terms of two new fractions, \s[lash]frac and
+%% \o[ver]frac. We also want to bracket the arguments of the slashed
+%% function, but only when the argument is over one character in
+%% length.
+\ExplSyntaxOn
+\NewDocumentCommand{\brmaybe}{m}
+{
+  \int_compare:nTF { \tl_count:n { #1 } > 1 }
+  {
+    \ensuremath{\br{#1}}
+  }
+  { % else
+    \ensuremath{#1}
+  }
+}
+\ExplSyntaxOff
+\providecommand{\sfrac}[2]{\ensuremath{\brmaybe{#1}/\brmaybe{#2}}}
+\providecommand{\ofrac}[2]{\ensuremath{{#1}\over{#2}}}
+\providecommand{\fr}[2]{\ensuremath{\mathchoice{\ofrac{#1}{#2}}{\sfrac{#1}{#2}}{\sfrac{#1}{#2}}{\sfrac{#1}{#2}}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Differential equation goodies %%
